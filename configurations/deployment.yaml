@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: CloudNativeFinal
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: CloudNativeFinal
+  template:
+    metadata:
+      labels:
+        app: CloudNativeFinal
+    spec:
+      containers:
+      - name: CloudNativeFinal
+        image: harbor.edu.cn/nju07/CloudNativeFinal:latest
+        ports:
+        - containerPort: 8080
+        # Expose metrics endpoint
+        livenessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8080
+          initialDelaySeconds: 10
+          periodSeconds: 5
